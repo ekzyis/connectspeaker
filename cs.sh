@@ -107,4 +107,19 @@ removeDevice() {
   connect
 }
 
+power() {
+  echo "power on" > /tmp/csIn
+  while read line;
+  do
+    echo "$line"
+    echo "$line" | grep -q "Changing power on succeeded"
+    if [ $? -eq 0 ]; then
+      break;
+    fi
+  done < /tmp/csOut
+}
+
+# make sure that controller is powered before
+# trying to connect
+power;
 connect;
